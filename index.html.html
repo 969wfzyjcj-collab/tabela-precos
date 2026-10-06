@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tabela de preços: criação de sites e manutenção</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#0f1a30;--mute:#5b667d;--line:#dde3ee;--acc:#2f5bea;--soft:#e6ecff;--hi:#e69500;--track:#e4e9f4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#131c2f;--ink:#eaf0ff;--mute:#93a0ba;--line:#243049;--acc:#7d9bff;--soft:#1b2748;--hi:#f5b43a;--track:#222d47}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#131c2f;--ink:#eaf0ff;--mute:#93a0ba;--line:#243049;--acc:#7d9bff;--soft:#1b2748;--hi:#f5b43a;--track:#222d47}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 18px 56px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;margin:0 0 10px;letter-spacing:-.02em}
+h2{font-size:22px;margin:44px 0 6px;letter-spacing:-.01em}
+.lead{color:var(--mute);max-width:60ch;margin:0 0 8px}
+.sub{color:var(--mute);margin:0 0 16px;font-size:14px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-weight:600;font-size:13px;color:var(--mute);text-align:left;padding:14px 16px;border-bottom:1px solid var(--line)}
+td{padding:18px 16px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:15px}
+tr:last-child td{border-bottom:0}
+td.name{font-weight:650;min-width:150px}
+td.name small{display:block;font-weight:400;color:var(--mute);font-size:13px}
+.price{min-width:200px}
+.price b{font-size:16px;white-space:nowrap}
+.bar{height:8px;border-radius:99px;background:var(--track);position:relative;margin-top:8px}
+.bar i{position:absolute;top:0;bottom:0;border-radius:99px;background:var(--acc)}
+.days{white-space:nowrap}
+.tag{display:inline-block;padding:3px 11px;border-radius:99px;background:var(--soft);color:var(--acc);font-size:13px;font-weight:600}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:relative;display:flex;flex-direction:column}
+.plan.top{border:2px solid var(--acc);box-shadow:0 10px 30px -14px var(--acc)}
+.badge{position:absolute;top:-12px;left:20px;background:var(--hi);color:#1a1200;font-size:12px;font-weight:700;padding:3px 12px;border-radius:99px}
+.plan h3{margin:0;font-size:20px}
+.plan .for{color:var(--mute);font-size:14px;margin:2px 0 14px}
+.plan .val{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.plan .val span{font-size:14px;font-weight:500;color:var(--mute)}
+.plan ul{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:14.5px}
+.plan li{padding-left:22px;position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:.45em;width:9px;height:5px;border-left:2px solid var(--acc);border-bottom:2px solid var(--acc);transform:rotate(-45deg)}
+.sim{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+label{display:block;font-size:13px;color:var(--mute);margin-bottom:6px;font-weight:600}
+select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;margin-bottom:14px}
+select:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
+.res{background:var(--soft);border-radius:14px;padding:18px;display:grid;gap:10px;align-content:start}
+.res div{display:flex;justify-content:space-between;gap:12px;font-size:14.5px;flex-wrap:wrap}
+.res .tot{border-top:1px solid var(--line);padding-top:12px;font-size:17px;font-weight:700;color:var(--acc)}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tips div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:14.5px}
+.tips b{display:block;margin-bottom:4px}
+@media (max-width:820px){
+ .plans,.tips,.sim{grid-template-columns:1fr}
+ thead{display:none}
+ table,tbody,tr,td{display:block;width:100%}
+ tr{padding:16px;border-bottom:1px solid var(--line)}
+ tr:last-child{border-bottom:0}
+ td{padding:6px 0;border:0}
+ td[data-l]::before{content:attr(data-l);display:block;font-size:12px;color:var(--mute);font-weight:600}
+ td.name{font-size:17px}
+ .price{min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Criação de sites e manutenção</h1>
+<p class="lead">Valores sugeridos por tipo de projeto, com prazo médio e o plano mensal mais indicado para cada um.</p>
+
+<h2>Projetos</h2>
+<p class="sub">As barras usam a mesma escala (de R$ 0 a R$ 22.000), então dá para comparar os projetos de relance.</p>
+<div class="panel"><table>
+<thead><tr><th>Projeto</th><th>O que inclui</th><th>Valor sugerido</th><th>Prazo médio</th><th>Manutenção indicada</th></tr></thead>
+<tbody id="rows"></tbody>
+</table></div>
+
+<h2>Planos de manutenção mensal</h2>
+<p class="sub">Cobrança recorrente depois da entrega do site.</p>
+<div class="plans" id="plans"></div>
+
+<h2>Simulador de investimento</h2>
+<p class="sub">Escolha o projeto e o plano para ver o custo estimado do primeiro ano.</p>
+<div class="sim">
+<div>
+<label for="sp">Projeto</label><select id="sp"></select>
+<label for="sm">Plano de manutenção</label><select id="sm"></select>
+</div>
+<div class="res" id="res"></div>
+</div>
+
+<h2>Sugestões para fechar a proposta</h2>
+<div class="tips">
+<div><b>Pagamento em duas etapas</b>50% na aprovação do escopo e 50% na entrega, com o site no ar.</div>
+<div><b>Primeiro mês de manutenção incluso</b>Reduz a objeção ao plano mensal e já cria o hábito de suporte.</div>
+<div><b>Extras fora do pacote</b>Domínio, textos, fotos profissionais e integrações especiais entram como itens à parte.</div>
+</div>
+</div>
+
+<script>
+var P=[
+{n:"Landing Page",s:"1 página",i:"Página de conversão, formulário, WhatsApp, responsivo, SEO básico",a:1800,b:3500,d:"5–10 dias",m:0},
+{n:"Site Institucional Básico",s:"",i:"Até 6 páginas (Home, Sobre, Serviços, Contato etc.)",a:2800,b:5500,d:"10–20 dias",m:0},
+{n:"Site Institucional Completo",s:"",i:"8–15 páginas + Blog + Painel de edição + SEO intermediário",a:6500,b:12000,d:"20–35 dias",m:1},
+{n:"E-commerce / Loja Virtual",s:"",i:"Até 100 produtos, carrinho, pagamento (Pix + cartão), frete",a:7500,b:14000,d:"25–40 dias",m:1},
+{n:"E-commerce Avançado",s:"ex.: loja de roupa",i:"Até 300 produtos, filtros, variações de tamanho/cor, cupons, painel completo",a:12000,b:22000,d:"35–50 dias",m:2},
+{n:"Site + Cardápio Digital + NFC",s:"",i:"Site institucional + cardápio digital completo + tags NFC configuradas",a:5500,b:9500,d:"15–25 dias",m:1}
+];
+var M=[
+{n:"Essencial",f:"Sites institucionais simples",a:149,b:197,l:["Hospedagem + SSL","Backup semanal","Atualizações de segurança","Suporte por WhatsApp (até 2h/mês)"]},
+{n:"Profissional",f:"Empresas e lojas virtuais",a:297,b:397,top:1,l:["Tudo do Essencial","Backup diário","Monitoramento 24h","Até 4h de alterações/mês","Relatório mensal"]},
+{n:"Premium",f:"E-commerces e negócios que mudam bastante",a:497,b:697,l:["Tudo do Profissional","Prioridade no suporte","Até 8h de alterações/mês","Otimizações de velocidade","Consultoria mensal"]}
+];
+var MAX=22000;
+function R(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0})}
+function E(v){return v.toLocaleString("pt-BR")}
+document.getElementById("rows").innerHTML=P.map(function(p){
+ var l=(p.a/MAX*100).toFixed(1),w=((p.b-p.a)/MAX*100).toFixed(1);
+ return '<tr><td class="name" data-l="Projeto">'+p.n+(p.s?'<small>'+p.s+'</small>':'')+'</td>'+
+ '<td data-l="O que inclui">'+p.i+'</td>'+
+ '<td class="price" data-l="Valor sugerido"><b>R$ '+E(p.a)+' – '+E(p.b)+'</b><div class="bar" aria-hidden="true"><i style="left:'+l+'%;width:'+w+'%"></i></div></td>'+
+ '<td class="days" data-l="Prazo médio">'+p.d+'</td>'+
+ '<td data-l="Manutenção indicada"><span class="tag">'+M[p.m].n+'</span></td></tr>'}).join("");
+document.getElementById("plans").innerHTML=M.map(function(m){
+ return '<div class="plan'+(m.top?' top':'')+'">'+(m.top?'<span class="badge">Mais escolhido</span>':'')+
+ '<h3>'+m.n+'</h3><div class="for">'+m.f+'</div>'+
+ '<div class="val">R$ '+m.a+' – '+m.b+' <span>/mês</span></div><ul>'+m.l.map(function(x){return '<li>'+x+'</li>'}).join("")+'</ul></div>'}).join("");
+var sp=document.getElementById("sp"),sm=document.getElementById("sm"),res=document.getElementById("res");
+sp.innerHTML=P.map(function(p,i){return '<option value="'+i+'">'+p.n+(p.s?' ('+p.s+')':'')+'</option>'}).join("");
+sm.innerHTML=M.map(function(m,i){return '<option value="'+i+'">'+m.n+'</option>'}).join("");
+function calc(){
+ var p=P[sp.value],m=M[sm.value];
+ res.innerHTML='<div><span>Criação do site</span><b>'+R(p.a)+' – '+R(p.b)+'</b></div>'+
+ '<div><span>Manutenção em 12 meses</span><b>'+R(m.a*12)+' – '+R(m.b*12)+'</b></div>'+
+ '<div><span>Prazo de entrega</span><b>'+p.d+'</b></div>'+
+ '<div class="tot"><span>Total no primeiro ano</span><span>'+R(p.a+m.a*12)+' – '+R(p.b+m.b*12)+'</span></div>'}
+sp.onchange=function(){sm.value=P[sp.value].m;calc()};
+sm.onchange=calc;
+sp.value=2;sm.value=P[2].m;calc();
+</script>
+</body>
+</html>
